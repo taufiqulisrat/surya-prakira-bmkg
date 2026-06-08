@@ -1,0 +1,14 @@
+{
+  "model": "RandomForestRegressor",
+  "n_estimators": 100,
+  "random_state": 42,
+  "test_size": 0.2,
+  "total_rows": 18,
+  "train_rows": 14,
+  "test_rows": 4,
+  "mse": 0.29393774202321904,
+  "r2_score": 0.8534281488003475,
+  "voltage_source": "simulasi",
+  "voltage_formula": "voltage = 0.8*t - 0.5*hu + 0.3*ws + noise + 20",
+  "voltage_note": "Kolom voltage dibuat dari simulasi berbasis suhu, kelembapan, kecepatan angin, dan noise acak karena data sensor voltase asli belum tersedia."
+}

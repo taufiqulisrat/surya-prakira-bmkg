@@ -1,0 +1,19 @@
+datetime,local_datetime,t,tcc,tp,weather_desc,wd,wd_deg,ws,hu,vs,vs_text,image
+2026-06-08T18:00:00Z,2026-06-09 01:00:00,24,38,0,Cerah,N,34,4.4,87,7988,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/cerah-pm.svg
+2026-06-08T21:00:00Z,2026-06-09 04:00:00,23,100,1.5,Hujan Ringan,NW,357,6.8,92,7992,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/hujan ringan-pm.svg
+2026-06-09T00:00:00Z,2026-06-09 07:00:00,24,90,0.4,Cerah Berawan,NE,69,3.9,94,7996,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/cerah berawan-am.svg
+2026-06-09T03:00:00Z,2026-06-09 10:00:00,26,100,0,Berawan,E,115,1.6,90,8007,< 9 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-am.svg
+2026-06-09T06:00:00Z,2026-06-09 13:00:00,28,53,1.9,Hujan Ringan,SW,229,3.3,76,8005,< 9 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/hujan ringan-am.svg
+2026-06-09T09:00:00Z,2026-06-09 16:00:00,24,91,1.2,Hujan Ringan,W,310,7.5,95,8008,< 9 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/hujan ringan-am.svg
+2026-06-09T12:00:00Z,2026-06-09 19:00:00,25,100,0.1,Berawan,W,295,1.6,93,7996,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-09T15:00:00Z,2026-06-09 22:00:00,24,99,0,Berawan,NE,72,1.4,87,7991,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-09T18:00:00Z,2026-06-10 01:00:00,24,100,0,Berawan,N,3,2.3,86,7991,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-09T21:00:00Z,2026-06-10 04:00:00,25,99,0,Berawan,NE,83,1.5,79,7991,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-10T00:00:00Z,2026-06-10 07:00:00,25,100,0,Berawan,NE,76,1.4,85,7984,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-am.svg
+2026-06-10T03:00:00Z,2026-06-10 10:00:00,27,100,0,Berawan,SW,268,4,82,7992,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-am.svg
+2026-06-10T06:00:00Z,2026-06-10 13:00:00,28,99,0,Berawan,SW,268,4,77,7992,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-am.svg
+2026-06-10T09:00:00Z,2026-06-10 16:00:00,27,100,0,Berawan,NE,60,1.8,79,7996,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-am.svg
+2026-06-10T12:00:00Z,2026-06-10 19:00:00,25,99,0,Berawan,NE,60,1.8,86,7996,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-10T15:00:00Z,2026-06-10 22:00:00,24,99,0,Berawan,NE,64,2.4,83,7995,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/berawan-pm.svg
+2026-06-10T18:00:00Z,2026-06-11 01:00:00,23,80,0,Cerah Berawan,NE,64,2.4,79,7995,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/cerah berawan-pm.svg
+2026-06-10T21:00:00Z,2026-06-11 04:00:00,23,41,0,Cerah,NE,57,3.3,75,7986,< 8 km,https://api-apps.bmkg.go.id/storage/icon/cuaca/cerah-pm.svg

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Cuaca dan Prediksi Tegangan Panel Surya</title>
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f7fafc;
+      --text: #142033;
+      --muted: #64748b;
+      --line: #d8e1ea;
+      --accent: #0f766e;
+      --accent-strong: #0b5f59;
+      --warning: #b45309;
+      --shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.10), transparent 34%),
+        linear-gradient(225deg, rgba(37, 99, 235, 0.10), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 32px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 750;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    select {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0 34px 0 12px;
+      font: inherit;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(216, 225, 234, 0.9);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .current {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      padding: 22px;
+      min-height: 220px;
+    }
+
+    .weather-icon {
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      align-self: start;
+    }
+
+    .current h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .current-time {
+      margin: 4px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 74px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-size: clamp(18px, 2.2vw, 25px);
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .summary {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .summary-row strong {
+      color: var(--text);
+      text-align: right;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 24px 0 12px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 4px;
+    }
+
+    .info-card {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .info-card h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .model-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .formula {
+      display: block;
+      padding: 12px;
+      border: 1px solid rgba(15, 118, 110, 0.24);
+      border-radius: 8px;
+      background: rgba(15, 118, 110, 0.08);
+      color: var(--accent-strong);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      width: fit-content;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(180, 83, 9, 0.11);
+      color: var(--warning);
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 14px;
+    }
+
+    .forecast-card {
+      min-height: 234px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+      padding: 15px;
+      display: grid;
+      gap: 12px;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .forecast-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(15, 118, 110, 0.45);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .card-top img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .card-top h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .card-top p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .mini {
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--surface-soft);
+      border: 1px solid #e4ebf2;
+      min-width: 0;
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .mini strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .voltage {
+      border-color: rgba(15, 118, 110, 0.25);
+      background: rgba(15, 118, 110, 0.08);
+    }
+
+    .empty-state {
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      padding: 24px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .theme-pagi {
+      --bg: #edf7fb;
+      --accent: #0e7490;
+      --accent-strong: #155e75;
+    }
+
+    .theme-siang {
+      --bg: #f3f8ed;
+      --accent: #15803d;
+      --accent-strong: #166534;
+    }
+
+    .theme-sore {
+      --bg: #f8f1ec;
+      --accent: #b45309;
+      --accent-strong: #92400e;
+    }
+
+    .theme-malam {
+      --bg: #111827;
+      --surface: #172033;
+      --surface-soft: #1f2a3d;
+      --text: #eef4ff;
+      --muted: #a8b3c7;
+      --line: #344258;
+      --shadow: 0 18px 38px rgba(0, 0, 0, 0.26);
+    }
+
+    .theme-malam .panel,
+    .theme-malam .forecast-card {
+      background: rgba(23, 32, 51, 0.92);
+    }
+
+    @media (max-width: 820px) {
+      .app {
+        width: min(100% - 22px, 1180px);
+        padding-top: 12px;
+      }
+
+      .topbar,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .toolbar,
+      .status {
+        width: 100%;
+        text-align: left;
+      }
+
+      .hero,
+      .model-grid,
+      .current {
+        grid-template-columns: 1fr;
+      }
+
+      .weather-icon {
+        width: 72px;
+        height: 72px;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .metrics,
+      .card-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="https://unp.ac.id/patch/images/800/88c55c3c3da3b19e7b7939feedaceb35.png" alt="Logo UNP">
+        <div>
+          <h1>Dashboard Cuaca dan Prediksi Tegangan</h1>
+          <p class="subtitle">IV Jurai, Nagari Salido, Sumatera Barat</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <label for="theme">Tema</label>
+        <select id="theme">
+          <option value="auto">Otomatis</option>
+          <option value="pagi">Pagi</option>
+          <option value="siang">Siang</option>
+          <option value="sore">Sore</option>
+          <option value="malam">Malam</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="panel current" id="currentPanel">
+        <div class="empty-state">Memuat data cuaca...</div>
+      </div>
+
+      <aside class="panel summary" id="summaryPanel">
+        <div class="summary-row"><span>Total data</span><strong>-</strong></div>
+        <div class="summary-row"><span>Rentang waktu</span><strong>-</strong></div>
+        <div class="summary-row"><span>Rata-rata suhu</span><strong>-</strong></div>
+        <div class="summary-row"><span>Rata-rata prediksi</span><strong>-</strong></div>
+      </aside>
+    </section>
+
+    <section class="model-grid">
+      <article class="panel info-card" id="modelPanel">
+        <h2>Hasil Random Forest</h2>
+        <p>Memuat metrik model...</p>
+      </article>
+
+      <article class="panel info-card" id="voltagePanel">
+        <h2>Asal Perhitungan Voltase</h2>
+        <p>Memuat keterangan sumber voltase...</p>
+      </article>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Prakiraan Berikutnya</h2>
+        <div class="status" id="status">Menyiapkan tampilan...</div>
+      </div>
+      <div class="forecast-grid" id="forecastGrid"></div>
+    </section>
+
+    <footer>Kelompok 1 UAS Machine Learning UNP - Data by BMKG</footer>
+  </main>
+
+  <script>
+    const CSV_URL = "../outputs/hasil_prediksi_tegangan.csv";
+    const METRICS_URL = "../outputs/model_metrics.json";
+    const themeSelect = document.getElementById("theme");
+    const currentPanel = document.getElementById("currentPanel");
+    const summaryPanel = document.getElementById("summaryPanel");
+    const modelPanel = document.getElementById("modelPanel");
+    const voltagePanel = document.getElementById("voltagePanel");
+    const forecastGrid = document.getElementById("forecastGrid");
+    const statusEl = document.getElementById("status");
+    let manualTheme = "auto";
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let value = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"' && insideQuotes && next === '"') {
+          value += '"';
+          i += 1;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === "," && !insideQuotes) {
+          row.push(value);
+          value = "";
+        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (value || row.length) {
+            row.push(value);
+            rows.push(row);
+            row = [];
+            value = "";
+          }
+          if (char === "\r" && next === "\n") i += 1;
+        } else {
+          value += char;
+        }
+      }
+
+      if (value || row.length) {
+        row.push(value);
+        rows.push(row);
+      }
+
+      const headers = rows.shift() || [];
+      return rows.map((cols) => headers.reduce((obj, header, index) => {
+        obj[header] = cols[index] || "";
+        return obj;
+      }, {}));
+    }
+
+    function numberValue(value) {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function formatDate(value) {
+      if (!value) return "-";
+      const date = new Date(value.replace(" ", "T"));
+      if (Number.isNaN(date.getTime())) return value;
+      return new Intl.DateTimeFormat("id-ID", {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+    }
+
+    function average(data, key) {
+      if (!data.length) return 0;
+      return data.reduce((sum, item) => sum + numberValue(item[key]), 0) / data.length;
+    }
+
+    function applyTheme(theme) {
+      document.body.classList.remove("theme-pagi", "theme-siang", "theme-sore", "theme-malam");
+
+      let selectedTheme = theme;
+      if (selectedTheme === "auto") {
+        const hour = new Date().getHours();
+        if (hour >= 6 && hour < 12) selectedTheme = "pagi";
+        else if (hour >= 12 && hour < 15) selectedTheme = "siang";
+        else if (hour >= 15 && hour < 18) selectedTheme = "sore";
+        else selectedTheme = "malam";
+      }
+
+      document.body.classList.add(`theme-${selectedTheme}`);
+    }
+
+    function renderCurrent(item) {
+      const predicted = numberValue(item.predicted_voltage);
+      currentPanel.innerHTML = `
+        <img class="weather-icon" src="${item.image}" alt="">
+        <div>
+          <h2>${item.weather_desc || "-"}</h2>
+          <p class="current-time">${formatDate(item.local_datetime)}</p>
+          <div class="metrics">
+            <div class="metric">
+              <span>Suhu</span>
+              <strong>${numberValue(item.t).toFixed(0)}°C</strong>
+            </div>
+            <div class="metric">
+              <span>Kelembapan</span>
+              <strong>${numberValue(item.hu).toFixed(0)}%</strong>
+            </div>
+            <div class="metric">
+              <span>Angin</span>
+              <strong>${numberValue(item.ws).toFixed(1)} km/j</strong>
+            </div>
+            <div class="metric voltage">
+              <span>Prediksi V</span>
+              <strong>${predicted.toFixed(3)} V</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSummary(data) {
+      const first = data[0];
+      const last = data[data.length - 1];
+      summaryPanel.innerHTML = `
+        <div class="summary-row"><span>Total data</span><strong>${data.length} baris</strong></div>
+        <div class="summary-row"><span>Rentang waktu</span><strong>${formatDate(first.local_datetime)} - ${formatDate(last.local_datetime)}</strong></div>
+        <div class="summary-row"><span>Rata-rata suhu</span><strong>${average(data, "t").toFixed(1)}°C</strong></div>
+        <div class="summary-row"><span>Rata-rata prediksi</span><strong>${average(data, "predicted_voltage").toFixed(3)} V</strong></div>
+      `;
+    }
+
+    function renderCards(data) {
+      forecastGrid.innerHTML = data.map((item) => `
+        <article class="forecast-card">
+          <div class="card-top">
+            <img src="${item.image}" alt="">
+            <div>
+              <h3>${formatDate(item.local_datetime)}</h3>
+              <p>${item.weather_desc || "-"}</p>
+            </div>
+          </div>
+          <div class="card-metrics">
+            <div class="mini"><span>Suhu</span><strong>${numberValue(item.t).toFixed(0)}°C</strong></div>
+            <div class="mini"><span>Hujan</span><strong>${numberValue(item.tp).toFixed(1)} mm</strong></div>
+            <div class="mini"><span>Kelembapan</span><strong>${numberValue(item.hu).toFixed(0)}%</strong></div>
+            <div class="mini"><span>Angin</span><strong>${numberValue(item.ws).toFixed(1)} km/j ${item.wd || ""}</strong></div>
+            <div class="mini voltage"><span>Prediksi V</span><strong>${numberValue(item.predicted_voltage).toFixed(3)} V</strong></div>
+            <div class="mini"><span>Jarak Pandang</span><strong>${item.vs_text || "-"}</strong></div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderModelMetrics(metrics) {
+      modelPanel.innerHTML = `
+        <h2>Hasil Random Forest</h2>
+        <p>
+          Model yang digunakan adalah <strong>${metrics.model || "RandomForestRegressor"}</strong>
+          dengan ${metrics.n_estimators || 100} pohon keputusan. Data dibagi menjadi
+          ${metrics.train_rows || "-"} baris latih dan ${metrics.test_rows || "-"} baris uji.
+        </p>
+        <div class="model-stats">
+          <div class="mini"><span>MSE</span><strong>${numberValue(metrics.mse).toFixed(3)}</strong></div>
+          <div class="mini"><span>R2 Score</span><strong>${numberValue(metrics.r2_score).toFixed(3)}</strong></div>
+          <div class="mini"><span>Total Data</span><strong>${metrics.total_rows || "-"} baris</strong></div>
+          <div class="mini"><span>Test Size</span><strong>${(numberValue(metrics.test_size) * 100).toFixed(0)}%</strong></div>
+        </div>
+      `;
+
+      const isSimulation = metrics.voltage_source === "simulasi";
+      voltagePanel.innerHTML = `
+        <h2>Asal Perhitungan Voltase</h2>
+        <span class="badge">${isSimulation ? "Voltase simulasi" : "Voltase dari data"}</span>
+        <p>${metrics.voltage_note || "Informasi sumber voltase belum tersedia."}</p>
+        ${isSimulation ? `<code class="formula">${metrics.voltage_formula}</code>` : ""}
+        <p>
+          Artinya nilai <strong>predicted_voltage</strong> adalah hasil prediksi Random Forest
+          terhadap target voltase tersebut. Untuk penelitian lapangan, target yang paling valid
+          sebaiknya berasal dari sensor atau alat ukur panel surya.
+        </p>
+      `;
+    }
+
+    async function loadModelMetrics() {
+      try {
+        const response = await fetch(`${METRICS_URL}?t=${Date.now()}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const metrics = await response.json();
+        renderModelMetrics(metrics);
+      } catch (error) {
+        modelPanel.innerHTML = `
+          <h2>Hasil Random Forest</h2>
+          <p>Metrik model belum tersedia. Jalankan <strong>python main.py</strong> untuk membuat file metrik.</p>
+        `;
+        voltagePanel.innerHTML = `
+          <h2>Asal Perhitungan Voltase</h2>
+          <p>Informasi sumber voltase belum dapat dimuat dari file metrik.</p>
+        `;
+      }
+    }
+
+    async function loadCSVData() {
+      try {
+        statusEl.textContent = "Memuat data...";
+        const response = await fetch(`${CSV_URL}?t=${Date.now()}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const text = await response.text();
+        const data = parseCSV(text).filter((item) => item.local_datetime);
+
+        if (!data.length) {
+          currentPanel.innerHTML = '<div class="empty-state">Data belum tersedia.</div>';
+          forecastGrid.innerHTML = '<div class="empty-state">Tidak ada data prakiraan yang dapat ditampilkan.</div>';
+          statusEl.textContent = "Data kosong";
+          return;
+        }
+
+        renderCurrent(data[0]);
+        renderSummary(data);
+        renderCards(data);
+        statusEl.textContent = `Terakhir dimuat ${new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`;
+      } catch (error) {
+        currentPanel.innerHTML = '<div class="empty-state">Gagal memuat CSV dari server lokal.</div>';
+        forecastGrid.innerHTML = "";
+        statusEl.textContent = `Gagal memuat data: ${error.message}`;
+      }
+    }
+
+    themeSelect.addEventListener("change", (event) => {
+      manualTheme = event.target.value;
+      applyTheme(manualTheme);
+    });
+
+    loadCSVData();
+    loadModelMetrics();
+    applyTheme(manualTheme);
+
+    setInterval(() => {
+      loadCSVData();
+      loadModelMetrics();
+      if (manualTheme === "auto") applyTheme("auto");
+    }, 60000);
+  </script>
+</body>
+</html>
